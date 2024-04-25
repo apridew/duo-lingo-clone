@@ -4,7 +4,7 @@ import { HeaderFeed } from "./headerFeed";
 import { UserProgress } from "@/components/userProgress";
 import { getUnits, getUserProgress } from "@/db/queries";
 import { redirect } from "next/navigation";
-import Unit from "./unit";
+import { Unit } from "./unit";
 
 const LearnPage = async () => {
   const userProgressData = getUserProgress();
