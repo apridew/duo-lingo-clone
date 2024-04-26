@@ -1,23 +1,35 @@
 import { FeedWrapper } from "@/components/feedWrapper";
 import { StickyWrapper } from "@/components/stickyWrapper";
-import { HeaderFeed } from "./headerFeed";
+import { HeaderLearn } from "./headerLearn";
 import { UserProgress } from "@/components/userProgress";
-import { getUnits, getUserProgress } from "@/db/queries";
+import {
+  getCourseProgress,
+  getLessonPercentage,
+  getUnits,
+  getUserProgress,
+} from "@/db/queries";
 import { redirect } from "next/navigation";
 import { Unit } from "./unit";
+import { lessons, units as unitSchema } from "@/db/schema";
 
 const LearnPage = async () => {
   const userProgressData = getUserProgress();
   const unitsData = getUnits();
+  const courseProgressData = getCourseProgress();
+  const lessonPercentageData = getLessonPercentage();
 
-  const [userProgress, units] = await Promise.all([
-    userProgressData,
-    unitsData,
-  ]);
+  const [userProgress, units, courseProgress, lessonPercentage] =
+    await Promise.all([
+      userProgressData,
+      unitsData,
+      courseProgressData,
+      lessonPercentageData,
+    ]);
 
-  if (!userProgress || !userProgress.activeCourse) {
+  if (!userProgress || !userProgress.activeCourse || !courseProgress) {
     redirect("/courses");
   }
+
   return (
     <div className="flex flex-row-reverse gap-[48px] px-6">
       <StickyWrapper>
@@ -29,7 +41,7 @@ const LearnPage = async () => {
         />
       </StickyWrapper>
       <FeedWrapper>
-        <HeaderFeed title={userProgress.activeCourse.title} />
+        <HeaderLearn title={userProgress.activeCourse.title} />
         {units.map((unit) => (
           <div key={unit.id} className="mb-10">
             <Unit
@@ -38,8 +50,14 @@ const LearnPage = async () => {
               description={unit.description}
               title={unit.title}
               lessons={unit.lessons}
-              activeLesson={undefined}
-              activeLessonsPercentage={0}
+              activeLesson={
+                courseProgress.activeLesson as
+                  | (typeof lessons.$inferSelect & {
+                      unit: typeof unitSchema.$inferSelect;
+                    })
+                  | undefined
+              }
+              activeLessonsPercentage={lessonPercentage}
             />
           </div>
         ))}
