@@ -2,6 +2,7 @@
 
 import { challengeOptions, challenges } from "@/db/schema";
 import { HeaderLesson } from "./headerLesson";
+import { useState } from "react";
 
 type Props = {
   initialLessonId: number;
@@ -21,5 +22,14 @@ export const Quiz = ({
   initialLessonPercentage,
   userSubscription,
 }: Props) => {
-  return <HeaderLesson />;
+  const [hearts, setHearts] = useState(initialHearts);
+  const [percentage, setPercentage] = useState(initialLessonPercentage);
+
+  return (
+    <HeaderLesson
+      hearts={hearts}
+      percentage={percentage}
+      hasActiveSubscription={!!userSubscription?.isActive}
+    />
+  );
 };
