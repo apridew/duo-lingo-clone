@@ -16,7 +16,7 @@ type Props = {
   percentage: number;
 };
 
-export const LessonButton = ({
+export const LearnButton = ({
   id,
   index,
   totalCount,
@@ -66,6 +66,7 @@ export const LessonButton = ({
           <div className="h-[102px] w-[102px] relative">
             <div className="absolute -top-6 left-2.5 px-3 py-2.5 border-2 font-bold uppercase text-green-500 bg-white rounded-xl animate-bounce tracking-wide z-10">
               Start
+              <div className="absolute border-x-8 border-x-transparent border-t-8 top-11 left-8" />
             </div>
             <CircularProgressbarWithChildren
               value={Number.isNaN(percentage) ? 0 : percentage}

@@ -1,6 +1,6 @@
 import { lessons, units } from "@/db/schema";
 import { UnitBanner } from "./unitBanner";
-import { LessonButton } from "./LessonButton";
+import { LearnButton } from "./learnButton";
 
 type Props = {
   id: number;
@@ -32,7 +32,7 @@ export const Unit = ({
           const isLocked = !lesson.completed && !isCurrent;
 
           return (
-            <LessonButton
+            <LearnButton
               key={lesson.id}
               id={lesson.id}
               index={index}
